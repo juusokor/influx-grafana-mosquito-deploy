@@ -1,2 +1,7 @@
 # influx-grafana-mosquito-deploy
-Deployment repo for InfluxDb, Grafana and Mosquito MQTT broker
+Docker deployment repo for InfluxDB, Grafana and Mosquito MQTT broker
+
+## Docker images:
+- InfluxDB `influxdb` https://github.com/influxdata/influxdata-docker
+- Grafana `grafana/grafana` https://grafana.com/docs/installation/docker/
+- Mosquito `eclipse-mosquitto` https://github.com/docker-library/docs/tree/master/eclipse-mosquitto
