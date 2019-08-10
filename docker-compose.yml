@@ -14,7 +14,8 @@ services:
       - "1883:1883"
     networks:
       - saunalog
-    columes: ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
 
   influxdb:
     image: influxdb:latest
