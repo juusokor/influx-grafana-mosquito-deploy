@@ -1,51 +1,53 @@
 version: "3"
 
-network:
-  - saunalog
+networks:
+  saunalog:
 
 services:
   mosquitto:
     image: eclipse-mosquitto
     container_name: mosquitto
+    deploy:
+      restart_policy:
+        condition: on-failure
     ports:
-        - ""
+      - "1883:1883"
     networks:
       - saunalog
-      - host
-  
+
   influxdb:
     image: influxdb:latest
     container_name: influxdb
+    deploy:
+      placement:
+        constraints: [node.role == manager]
     ports:
       - "8086"
       - "8083"
       - "2003"
-  networks:
-    - saunalog
-  volumes:
-    - /srv/docker/influxdb/data:var/lib/influxdb
-  deploy:
-    placement:
-      constraints: [node.role == manager]
-    
+    networks:
+      - saunalog
+    volumes:
+      - /srv/docker/influxdb/data:/var/lib/influxdb
+
   telegraf:
-  image: telegraf:latest
-  container_name: telegraf
-  networks:
-    - saunalog
-  depends_on: influxdb
-  volumes:
-    - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
-  
+    image: telegraf:latest
+    container_name: telegraf
+    networks:
+      - saunalog
+    depends_on:
+      - influxdb
+    volumes:
+      - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
-    depends_on: 
+    depends_on:
       - influxdb
     ports:
       - "3000"
-  networks:
-    - saunalog
-    - host
-  volumes:
-    - /srv/docker/grafana/data:var/lib/grafana
+    networks:
+      - saunalog
+    volumes:
+      - /srv/docker/grafana/data:/var/lib/grafana
