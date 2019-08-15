@@ -6,7 +6,6 @@ networks:
 services:
   mosquitto:
     image: eclipse-mosquitto
-    container_name: mosquitto
     deploy:
       restart_policy:
         condition: on-failure
@@ -14,15 +13,16 @@ services:
       - "1883:1883"
     networks:
       - saunalog
-    volumes:
-      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+  #    volumes:
+  #      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
 
   influxdb:
     image: influxdb:latest
-    container_name: influxdb
     deploy:
       placement:
         constraints: [node.role == manager]
+        restart_policy:
+          condition: on-failure
     ports:
       - "8086"
       - "8083"
@@ -34,7 +34,6 @@ services:
 
   telegraf:
     image: telegraf:latest
-    container_name: telegraf
     networks:
       - saunalog
     depends_on:
@@ -44,7 +43,6 @@ services:
 
   grafana:
     image: grafana/grafana:latest
-    container_name: grafana
     depends_on:
       - influxdb
     ports:
