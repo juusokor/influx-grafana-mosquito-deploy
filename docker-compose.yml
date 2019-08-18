@@ -23,7 +23,7 @@ services:
         constraints: [node.role == manager]
         restart_policy:
           condition: on-failure
-    ports:
+    expose:
       - "8086"
       - "8083"
       - "2003"
