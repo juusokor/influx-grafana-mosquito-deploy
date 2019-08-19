@@ -21,8 +21,8 @@ services:
     deploy:
       placement:
         constraints: [node.role == manager]
-        restart_policy:
-          condition: on-failure
+    restart_policy:
+      condition: on-failure
     expose:
       - "8086"
       - "8083"
