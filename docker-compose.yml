@@ -21,12 +21,8 @@ services:
     deploy:
       placement:
         constraints: [node.role == manager]
-    restart_policy:
-      condition: on-failure
-    expose:
-      - "8086"
-      - "8083"
-      - "2003"
+      restart_policy:
+        condition: on-failure
     networks:
       - saunalog
     volumes:
